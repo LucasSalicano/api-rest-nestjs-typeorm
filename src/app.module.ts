@@ -20,7 +20,7 @@ import { CoursesModule } from './courses/courses.module';
         password: config.get("POSTGRES_PASSWORD"),
         database: config.get("POSTGRES_DB"),
         autoLoadEntities: true,
-        synchronize: true
+        synchronize: false
       })
     })],
   controllers: [AppController],
