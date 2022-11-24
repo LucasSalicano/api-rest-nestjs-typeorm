@@ -19,7 +19,8 @@ import { CoursesModule } from './courses/courses.module';
         username: config.get("POSTGRES_USER"),
         password: config.get("POSTGRES_PASSWORD"),
         database: config.get("POSTGRES_DB"),
-        autoLoadEntities: true,
+        entities: [__dirname + '/**/*.entity.js'],
+        autoLoadEntities: false,
         synchronize: false
       })
     })],
