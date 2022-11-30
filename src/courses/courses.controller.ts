@@ -14,7 +14,7 @@ export class CoursesController {
     }
 
     @Get(':id')
-    public findOne(@Param('id') id) {
+    public findOne(@Param('id') id: string) {
         return this.coursesService.findOne(id)
     }
 
@@ -29,7 +29,7 @@ export class CoursesController {
     }
 
     @Delete(':id')
-    public delete(@Param('id') id) {
+    public delete(@Param('id') id: string) {
         return this.coursesService.delete(id)
     }
 

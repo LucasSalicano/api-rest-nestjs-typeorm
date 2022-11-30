@@ -5,6 +5,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Course } from './entities/course.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class CoursesService {
@@ -24,6 +25,11 @@ export class CoursesService {
     }
 
     public async findOne(courseId: string) {
+
+        if (!isUUID(courseId)) {
+            throw new NotFoundException("Uuid provided is invalid.")
+        }
+
         const course = await this.courseRepository.findOne({
             where: {
                 id: courseId
@@ -31,7 +37,11 @@ export class CoursesService {
             relations: ['tags']
         })
 
-        return course ?? new NotFoundException("Course not found").getResponse()
+        if (!course) {
+            throw new NotFoundException("Course not found")
+        }
+
+        return course
     }
 
     public async create(createCourseDto: CreateCourseDto) {
@@ -47,6 +57,11 @@ export class CoursesService {
     }
 
     public async update(courseId: string, updateCourseDto: UpdateCourseDto) {
+
+        if (!isUUID(courseId)) {
+            throw new NotFoundException("Uuid provided is invalid.")
+        }
+        
         const tags = updateCourseDto.tags && (
             await Promise.all(
                 updateCourseDto.tags.map((name) => this.preloadTagByName(name))
@@ -67,6 +82,11 @@ export class CoursesService {
     }
 
     public async delete(courseId: string) {
+
+        if (!isUUID(courseId)) {
+            throw new NotFoundException("Uuid provided is invalid.")
+        }
+
         const course = await this.courseRepository.findOne({
             where: {
                 id: courseId
