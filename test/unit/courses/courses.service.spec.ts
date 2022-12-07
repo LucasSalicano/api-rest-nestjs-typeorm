@@ -1,10 +1,10 @@
-import { NotFoundException } from '@nestjs/common';
-import { Tag } from './../../src/courses/entities/tag.entity';
-import { CoursesService } from './../../src/courses/courses.service';
+import { CoursesService } from '../../../src/courses/courses.service';
 import { Test, TestingModule } from '@nestjs/testing'
 import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Course } from '../../src/courses/entities/course.entity';
+import { Course } from '../../../src/courses/entities/course.entity';
+import { Tag } from '../../../src/courses/entities/tag.entity';
+import { NotFoundException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>
 
@@ -47,7 +47,7 @@ describe('CoursesService', () => {
                 const courseId = "542be7f7-fcd1-4948-aec1-5e740e85361c"
                 const expectCourse = {}
 
-                courseRepository.findOne.mockReturnValue(expectCourse)
+                courseRepository.findOne?.mockReturnValue(expectCourse)
 
                 const course = await service.findOne(courseId)
                 expect(course).toEqual(expectCourse)
@@ -55,7 +55,7 @@ describe('CoursesService', () => {
 
             it('should return a NotFoundException for uuid invalid', async () => {
                 const courseId = "1"
-                courseRepository.findOne.mockReturnValue(undefined)
+                courseRepository.findOne?.mockReturnValue(undefined)
 
                 try {
                     await service.findOne(courseId)
@@ -67,7 +67,7 @@ describe('CoursesService', () => {
 
             it('should return a NotFoundException for course not available', async () => {
                 const courseId = "542be7f7-fcd1-4948-aec1-5e740e85361c"
-                courseRepository.findOne.mockReturnValue(undefined)
+                courseRepository.findOne?.mockReturnValue(undefined)
 
                 try {
                     await service.findOne(courseId)
