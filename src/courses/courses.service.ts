@@ -1,22 +1,19 @@
 import { Tag } from './entities/tag.entity';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Course } from './entities/course.entity';
 import { isUUID } from 'class-validator';
 
 @Injectable()
 export class CoursesService {
+    
+    @Inject('COURSES_REPOSITORY')
+    private courseRepository: Repository<Course>
 
-    constructor(
-        @InjectRepository(Course)
-        private readonly courseRepository: Repository<Course>,
-
-        @InjectRepository(Tag)
-        private readonly tagRepository: Repository<Tag>,
-    ) { }
+    @Inject('TAGS_REPOSITORY')
+    private tagRepository: Repository<Tag>
 
     public findAll() {
         return this.courseRepository.find({
@@ -61,7 +58,7 @@ export class CoursesService {
         if (!isUUID(courseId)) {
             throw new NotFoundException("Uuid provided is invalid.")
         }
-        
+
         const tags = updateCourseDto.tags && (
             await Promise.all(
                 updateCourseDto.tags.map((name) => this.preloadTagByName(name))

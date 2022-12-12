@@ -7,23 +7,23 @@ import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [CoursesModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule.forRoot({
-        envFilePath: ['.env']
-      })],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'postgres',
-        host: config.get("POSTGRES_HOST"),
-        port: config.get("POSTGRES_PORT"),
-        username: config.get("POSTGRES_USER"),
-        password: config.get("POSTGRES_PASSWORD"),
-        database: config.get("POSTGRES_DB"),
-        entities: [__dirname + '/**/*.entity.js'],
-        autoLoadEntities: false,
-        synchronize: false
-      })
-    })],
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule.forRoot({
+    //     envFilePath: ['.env']
+    //   })],
+    //   inject: [ConfigService],
+    // useFactory: (config: ConfigService) => ({
+    //   type: 'postgres',
+    //   host: config.get("POSTGRES_HOST"),
+    //   port: config.get("POSTGRES_PORT"),
+    //   username: config.get("POSTGRES_USER"),
+    //   password: config.get("POSTGRES_PASSWORD"),
+    //   database: config.get("POSTGRES_DB"),
+    //   entities: [__dirname + '/**/*.entity.js'],
+    //   autoLoadEntities: false,
+    //   synchronize: false
+    // })
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
